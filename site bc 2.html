@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification IP avec Webhook Discord</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+        }
+        #container {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        h1 {
+            font-size: 20px;
+            color: #333;
+        }
+        #result {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Vérification Anti-DC</h1>
+        <button onclick="sendIPToDiscord()">Vérifier</button>
+        <h6>Vérification double-compte pour le serveur "Communauté R6 FR"</h6>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const webhookURL = "https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K";  // Remplacez par votre webhook Discord
+
+        function sendIPToDiscord() {
+            // Récupère les informations d'IP
+            fetch("http://ip-api.com/json/")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        const userIP = data.query;
+                        const isVPN = data.proxy ? "Oui" : "Non";
+                        const isMOBILE = data.mobile ? "Oui" : "Non";
+
+                        // Prépare les données pour le webhook Discord
+                        const message = {
+                            content: `Nouvelle vérification IP :\n**IP**: censurer pour le moment\n**Pays**: ${data.country}\n**Ville**: ${data.city}\n**Utilise un VPN**: ${isVPN}\n**Utilise un réseau MOBILE**: ${isMOBILE}`
+                        };
+
+                        // Envoie les données au webhook Discord
+                        fetch(webhookURL, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(message)
+                        })
+                        .then(() => {
+                            document.getElementById("result").innerText = "Envoi réussi !";
+                        })
+                        .catch(error => {
+                            console.error("Erreur lors de l'envoi au webhook:", error);
+                            document.getElementById("result").innerText = "Erreur lors de l'envoi.";
+                        });
+                    } else {
+                        document.getElementById("result").innerText = "Impossible de récupérer les informations IP.";
+                    }
+                })
+                .catch(error => {
+                    document.getElementById("result").innerText = "Erreur lors de la récupération de l'IP.";
+                    console.error("Erreur:", error);
+                });
+        }
+    </script>
+</body>
+</html>
