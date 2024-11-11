@@ -50,65 +50,34 @@
     </div>
 
     <script>
-        const webhookURL = "https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K";
-        const proxy = "https://thingproxy.freeboard.io/";
-        const apiUrl = "https://api.botghost.com/webhook/1151241118403534958/0t2nh2769i3bdja5axve7b";
-
         function checkIP() {
+            // Récupérer l'IP de l'utilisateur
             fetch("https://api.ipify.org?format=json")
                 .then(response => response.json())
                 .then(data => {
                     const userIP = data.ip;
 
-                    const message = {
-                        content: `Nouvelle vérification : \n**IP**: ${userIP}`
-                    };
-
-                    fetch(webhookURL, {
+                    // Envoyer l'IP au backend Flask
+                    fetch("http://localhost:5000/verify", {  // Votre backend Python
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
                         },
-                        body: JSON.stringify(message)
-                    })
-                    .then(() => {
-                        document.getElementById("result").innerText = "IP vérifiée et inscription validée !";
-                    })
-                    .catch(error => {
-                        console.error("Erreur lors de l'envoi au webhook Discord:", error);
-                        document.getElementById("result").innerText = "Erreur lors de la validation.";
-                    });
-
-                    const apiPayload = {
-                        variables: [
-                            {
-                                name: "IP",
-                                variable: "IP",
-                                value: "${userIP}"
-                            }
-                        ]
-                    };
-
-                    fetch(apiUrl, {
-                        method: "POST",
-                        headers: {
-                            "Authorization": "bd8f5e61c5b98e12773f211488437e25f753c9139c32103c0bcce6f2bf9223f9",
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(apiPayload)
+                        body: JSON.stringify({ ip: userIP })
                     })
                     .then(response => response.json())
                     .then(data => {
-                        console.log("Réponse de BotGhost:", data);
+                        console.log(data.message);
+                        document.getElementById("result").innerText = data.message;
                     })
                     .catch(error => {
-                        console.error("Erreur lors de l'envoi à l'API BotGhost:", error);
+                        console.error("Erreur lors de l'envoi au backend:", error);
+                        document.getElementById("result").innerText = "Erreur lors de la validation.";
                     });
-
                 })
                 .catch(error => {
+                    console.error("Erreur lors de la récupération de l'IP:", error);
                     document.getElementById("result").innerText = "Erreur lors de la récupération de l'IP.";
-                    console.error("Erreur:", error);
                 });
         }
     </script>
