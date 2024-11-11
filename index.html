@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Vérification d'IP</title>
     <style>
+        /* Style de base */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -11,25 +12,37 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: black;
+            background-color: #121212; /* Fond noir */
+            color: #ffffff; /* Texte blanc */
         }
+
+        /* Conteneur centralisé */
         #container {
             text-align: center;
-            padding: 20px;
-            border: 1px solid #ddd;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
             width: 300px;
+            border: 1px solid #444;
+            background-color: #1e1e1e; /* Fond gris foncé */
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
-        h1 {
-            font-size: 20px;
-            color: #333;
+
+        /* Style du bouton */
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            background-color: #5865f2; /* Bleu Discord */
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
         }
-        #result {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #555;
+
+        .button:hover {
+            background-color: #4752c4; /* Bleu Discord foncé */
         }
     </style>
     <script>
@@ -56,25 +69,29 @@
                             })
                         })
                         .then(() => {
-                            document.body.innerHTML = "<h2>Vérification réussie ! Vous pouvez retourner sur Discord.</h2>";
+                            document.getElementById("message").innerText = "Vérification réussie ! Vous pouvez retourner sur Discord.";
                         })
                         .catch(error => {
                             console.error("Erreur lors de l'envoi de l'IP:", error);
-                            document.body.innerHTML = "<h2>Erreur lors de la vérification.</h2>";
+                            document.getElementById("message").innerText = "Erreur lors de la vérification.";
                         });
                     })
                     .catch(error => {
                         console.error("Erreur lors de la récupération de l'IP:", error);
-                        document.body.innerHTML = "<h2>Erreur lors de la récupération de votre IP.</h2>";
+                        document.getElementById("message").innerText = "Erreur lors de la récupération de votre IP.";
                     });
             } else {
-                document.body.innerHTML = "<h2>Erreur : utilisateur non identifié.</h2>";
+                document.getElementById("message").innerText = "Erreur : utilisateur non identifié.";
             }
         });
     </script>
 </head>
 <body>
-    <h1>Vérification en cours...</h1>
+    <div id="container">
+        <h1>Vérification en cours...</h1>
+        <p id="message">Merci de patienter pendant la vérification.</p>
+        <a href="https://discord.gg/communaute-r6-fr-840213539313418241" class="button">Revenir sur le serveur</a>
+    </div>
 </body>
 </html>
 
