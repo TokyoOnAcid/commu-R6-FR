@@ -86,9 +86,9 @@
                     const apiPayload = {
                         variables: [
                             {
-                                name: "message",
+                                name: "IP",
                                 variable: "{event_message}",
-                                value: "HELLO from webhooks"
+                                value: "${userIP}"
                             }
                         ]
                     };
