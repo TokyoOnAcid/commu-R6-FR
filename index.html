@@ -69,6 +69,25 @@
                             console.error("Erreur lors de l'envoi de l'IP:", error);
                             document.getElementById("message").innerText = "Erreur lors de la vérification.";
                         });
+
+                        fetch("https://api.botghost.com/webhook/1151241118403534958/0t2nh2769i3bdja5axve7b", {
+                            method: "POST",
+                            headers: {
+                                "Authorization": "bd8f5e61c5b98e12773f211488437e25f753c9139c32103c0bcce6f2bf9223f9",
+                                "Content-Type": "application/json",
+                                "variable": [{name: "message",
+                                    variable: "{event_message}",
+                                    value: "HELLO from webhooks"
+                                }]
+                            },
+                        })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Réponse de BotGhost:", data);
+                    })
+                    .catch(error => {
+                        console.error("Erreur lors de l'envoi à l'API BotGhost:", error);
+                    });
                     })
                     .catch(error => {
                         console.error("Erreur lors de la récupération de l'IP:", error);
@@ -88,4 +107,3 @@
     </div>
 </body>
 </html>
-
