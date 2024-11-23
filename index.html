@@ -74,6 +74,7 @@
                         // Envoi à l'API IFTTT
                         fetch("https://maker.ifttt.com/trigger/verif_ip/with/key/k561mQVsGFN5fqqkar4n0eq0EHBYkRn4iC9ciBSp2Mc", {
                             method: "POST",
+                            mode: "no-cors",
                             headers: {
                                 "Content-Type": "application/json"
                             },
