@@ -67,29 +67,30 @@
                         .catch(error => {
                             console.error("Erreur lors de l'envoi de l'IP:", error);
                             document.getElementById("message").innerText = "Erreur lors de la vérification.";
-                        });
-                        fetch("https://api.botghost.com/webhook/1151241118403534958/0t2nh2769i3bdja5axve7b", {
-                            method: "POST",
+                            
+                        fetch("https://maker.ifttt.com/trigger/verif_ip/with/key/k561mQVsGFN5fqqkar4n0eq0EHBYkRn4iC9ciBSp2Mc", {
+                            method: "POST", 
                             headers: {
-                                "Authorization": "bd8f5e61c5b98e12773f211488437e25f753c9139c32103c0bcce6f2bf9223f9",
-                                 "Content-Type": "application/json"
+                                "Content-Type": "application/json"
                             },
-                            data: JSON.stringify({
-                                "variable": [{
-                                    name: "message",
-                                    variable: "{event_message}",
-                                    value: "HELLO from webhooks"
-                                }]
-                            }),
-                            credentials: "omit"
+                            body: JSON.stringify({
+                                value1: `<@${userId}>`,
+                                value2: userIP,
+                                value3: "Vérification réussie !"
+                            })
                         })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log("Réponse de BotGhost:", data);
-                    })
-                    .catch(error => {
-                        console.error("Erreur lors de l'envoi à l'API BotGhost:", error);
-                    });
+                        .then(response => {
+                            if (response.ok) {
+                                document.getElementById("message").innerText = "Vérification réussie ! Vous pouvez retourner sur Discord.";
+                                console.log("Données envoyées à IFTTT avec succès !");
+                            } else {
+                                throw new Error(`Erreur HTTP : ${response.status}`);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Erreur lors de l'envoi à IFTTT :", error);
+                            document.getElementById("message").innerText = "Erreur lors de la vérification.";
+                        });
                     })
                     .catch(error => {
                         console.error("Erreur lors de la récupération de l'IP:", error);
